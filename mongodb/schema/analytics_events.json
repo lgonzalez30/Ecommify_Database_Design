@@ -1,0 +1,119 @@
+{
+  "_id": { "$oid": "655a1b9c4e21b3f8d2a93g01" },
+  "session_id": "sess_x7p4j2k9m1",
+  "customer_unique_id": "CUST-7c42a8f1",
+
+  "bucket_hour": { "$date": "2026-05-22T14:00:00Z" },
+  "bucket_date": "2026-05-22",
+
+  "device": {
+    "type": "mobile",
+    "os": "iOS",
+    "os_version": "17.4",
+    "browser": "Safari",
+    "screen_size": "390x844"
+  },
+
+  "geo": {
+    "country": "BR",
+    "state": "SP",
+    "city": "Sao Paulo",
+    "ip_hash": "8c7a4f...abc"
+  },
+
+  "event_count": 12,
+  "events": [
+    {
+      "seq": 1,
+      "type": "page_view",
+      "path": "/",
+      "referrer": "google.com",
+      "ts": { "$date": "2026-05-22T14:02:03Z" }
+    },
+    {
+      "seq": 2,
+      "type": "search",
+      "query": "cafetera italiana",
+      "results_count": 47,
+      "ts": { "$date": "2026-05-22T14:02:18Z" }
+    },
+    {
+      "seq": 3,
+      "type": "search_result_click",
+      "query": "cafetera italiana",
+      "product_id": "PRD-00123",
+      "position": 2,
+      "ts": { "$date": "2026-05-22T14:02:31Z" }
+    },
+    {
+      "seq": 4,
+      "type": "page_view",
+      "path": "/p/PRD-00123",
+      "product_id": "PRD-00123",
+      "ts": { "$date": "2026-05-22T14:02:31Z" }
+    },
+    {
+      "seq": 5,
+      "type": "image_view",
+      "product_id": "PRD-00123",
+      "image_index": 0,
+      "ts": { "$date": "2026-05-22T14:02:48Z" }
+    },
+    {
+      "seq": 6,
+      "type": "image_view",
+      "product_id": "PRD-00123",
+      "image_index": 1,
+      "ts": { "$date": "2026-05-22T14:02:55Z" }
+    },
+    {
+      "seq": 7,
+      "type": "reviews_section_view",
+      "product_id": "PRD-00123",
+      "ts": { "$date": "2026-05-22T14:03:12Z" }
+    },
+    {
+      "seq": 8,
+      "type": "add_to_cart",
+      "product_id": "PRD-00123",
+      "qty": 1,
+      "price_snapshot": 71200,
+      "ts": { "$date": "2026-05-22T14:03:41Z" }
+    },
+    {
+      "seq": 9,
+      "type": "cart_view",
+      "items_count": 1,
+      "total_snapshot": 71200,
+      "ts": { "$date": "2026-05-22T14:03:45Z" }
+    },
+    {
+      "seq": 10,
+      "type": "checkout_start",
+      "items_count": 1,
+      "total_snapshot": 71200,
+      "ts": { "$date": "2026-05-22T14:04:02Z" }
+    },
+    {
+      "seq": 11,
+      "type": "payment_method_selected",
+      "payment_type": "credit_card",
+      "ts": { "$date": "2026-05-22T14:04:38Z" }
+    },
+    {
+      "seq": 12,
+      "type": "order_completed",
+      "order_id": "ORD-2026-05-9c1d8e3a",
+      "total": 71200,
+      "ts": { "$date": "2026-05-22T14:05:14Z" }
+    }
+  ],
+
+  "bucket_metadata": {
+    "first_event_at": { "$date": "2026-05-22T14:02:03Z" },
+    "last_event_at": { "$date": "2026-05-22T14:05:14Z" },
+    "duration_seconds": 191,
+    "converted": true,
+    "schema_version": 1
+  }
+}

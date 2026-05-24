@@ -1,0 +1,78 @@
+{
+  "_id": { "$oid": "655a1b9c4e21b3f8d2a91e01" },
+  "product_id": "PRD-00123",
+  "sku": "PRD-00123",
+  "name": "Cafetera italiana 6 tazas — Aluminio",
+  "description": "Cafetera tipo moka, 6 tazas, fabricada en aluminio fundido, válvula de seguridad y mango ergonómico de baquelita.",
+
+  "category": {
+    "id": 4,
+    "name": "utilidades_domesticas",
+    "name_english": "housewares"
+  },
+
+  "seller": {
+    "id": "slr_8a3f7c91",
+    "name": "Casa Buena LTDA",
+    "city": "Sao Paulo",
+    "state": "SP",
+    "rating_avg": 4.7,
+    "n_reviews": 1284
+  },
+
+  "specifications": {
+    "material": "aluminio_fundido",
+    "capacity_cups": 6,
+    "color": "plateado",
+    "voltage": null,
+    "warranty_months": 12,
+    "country_of_origin": "BR",
+    "is_dishwasher_safe": false
+  },
+
+  "images": [
+    "https://cdn.ecommify.com/products/PRD-00123/main.jpg",
+    "https://cdn.ecommify.com/products/PRD-00123/side.jpg",
+    "https://cdn.ecommify.com/products/PRD-00123/detail.jpg",
+    "https://cdn.ecommify.com/products/PRD-00123/box.jpg"
+  ],
+
+  "tags": ["cafe", "italiana", "cocina", "hogar", "aluminio", "oferta"],
+
+  "dimensions": {
+    "length_cm": 12.0,
+    "height_cm": 22.5,
+    "width_cm": 12.0,
+    "weight_g": 480.0
+  },
+
+  "base_price": 89000,
+  "currency": "COP",
+
+  "price_current": 71200,
+  "has_active_promotion": true,
+  "discount_percentage": 20,
+  "active_promotion": {
+    "promotion_id": "promo_blackfriday_2026",
+    "name": "Black Friday 2026 — Cocina",
+    "valid_until": { "$date": "2026-11-30T23:59:59Z" }
+  },
+
+  "stock_status": "in_stock",
+  "stock_count_bucket": "high",
+
+  "rating": {
+    "avg": 4.5,
+    "count": 342,
+    "distribution": { "1": 8, "2": 12, "3": 24, "4": 110, "5": 188 }
+  },
+
+  "search_vector": {
+    "boost_terms": ["cafetera", "moka", "italiana"],
+    "language": "pt"
+  },
+
+  "source_updated_at": { "$date": "2026-05-22T09:14:33Z" },
+  "synced_at": { "$date": "2026-05-22T09:14:35Z" },
+  "schema_version": 1
+}

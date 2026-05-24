@@ -1,0 +1,47 @@
+{
+  "_id": { "$oid": "655a1b9c4e21b3f8d2a92f01" },
+  "review_id": "rev_4f8a2c11d9",
+  "review_type": "product",
+
+  "order_id": "ORD-2026-04-3a91f7c8",
+  "product_id": "PRD-00123",
+  "customer_unique_id": "CUST-7c42a8f1",
+  "seller_id": "slr_8a3f7c91",
+
+  "score": 5,
+  "title": "Excelente cafetera, supera expectativas",
+  "message": "La cafetera llegó muy bien empacada, antes del tiempo estimado. La calidad del aluminio es notable y el café sale con la textura correcta desde la primera preparación. Recomendado completamente.",
+
+  "language": "es",
+  "tags_auto": ["calidad_producto", "envio_rapido", "empaque_bueno"],
+  "sentiment": {
+    "label": "positive",
+    "score": 0.92
+  },
+
+  "metadata": {
+    "verified_purchase": true,
+    "helpful_votes": 17,
+    "report_count": 0,
+    "source_channel": "web"
+  },
+
+  "seller_response": {
+    "text": "Muchas gracias por su reseña. Estamos felices de que disfrute su nueva cafetera.",
+    "responded_at": { "$date": "2026-04-18T14:23:11Z" },
+    "responded_by": "slr_8a3f7c91"
+  },
+
+  "media": [
+    {
+      "type": "image",
+      "url": "https://cdn.ecommify.com/reviews/rev_4f8a2c11d9/photo1.jpg",
+      "uploaded_at": { "$date": "2026-04-17T20:11:09Z" }
+    }
+  ],
+
+  "created_at": { "$date": "2026-04-17T20:09:42Z" },
+  "answered_at": { "$date": "2026-04-18T14:23:11Z" },
+  "updated_at": { "$date": "2026-04-18T14:23:11Z" },
+  "schema_version": 1
+}

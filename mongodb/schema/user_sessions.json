@@ -1,0 +1,65 @@
+{
+  "_comment_": "Ejemplo de documento de la coleccion user_sessions. Datos efimeros con TTL nativo de MongoDB. No requiere joins ni relaciones. La FK logica a Customer.customer_unique_id en PostgreSQL es opcional (sesiones anonimas tambien validas).",
+  "_id": "ObjectId('66a1b2c3d4e5f6a7b8c9d0e1')",
+  "session_id": "sess_8f3a9c2b1e7d4f5a6b8c9d0e1f2a3b4c",
+  "customer_unique_id_ref": "861eff4711a542e4b93843c6dd7febb0",
+  "is_anonymous": false,
+  "device": {
+    "type": "mobile",
+    "os": "iOS",
+    "os_version": "17.4",
+    "browser": "Safari",
+    "user_agent_hash": "sha256:a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8"
+  },
+  "geo": {
+    "ip_country": "BR",
+    "ip_state": "SP",
+    "ip_city_approx": "Sao Paulo",
+    "_comment_geo": "Geolocalizacion aproximada por IP. No se guarda IP cruda por privacidad (LGPD/GDPR). Solo se guarda hash para deteccion de fraude."
+  },
+  "started_at": "2026-05-22T14:32:11.000Z",
+  "last_activity_at": "2026-05-22T14:58:43.000Z",
+  "expires_at": "2026-05-22T15:28:43.000Z",
+  "_comment_expires": "TTL Index sobre expires_at hace que MongoDB borre el documento automaticamente. Sesion activa = 30 minutos desde ultima actividad.",
+  "auth_state": {
+    "is_authenticated": true,
+    "auth_method": "email_password",
+    "authenticated_at": "2026-05-22T14:32:30.000Z",
+    "_comment_auth": "Si el customer_unique_id_ref viene de auth, este flag debe ser true. Si es navegacion anonima, is_authenticated es false y customer_unique_id_ref es null."
+  },
+  "cart": {
+    "items_count": 3,
+    "subtotal": 247.5,
+    "last_updated_at": "2026-05-22T14:51:08.000Z",
+    "items": [
+      {
+        "product_id_ref": "1e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b",
+        "quantity": 2,
+        "unit_price_snapshot": 89.9
+      },
+      {
+        "product_id_ref": "2f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c",
+        "quantity": 1,
+        "unit_price_snapshot": 67.7
+      }
+    ]
+  },
+  "navigation": {
+    "entry_url": "/",
+    "entry_referrer": "https://www.google.com.br/",
+    "utm": {
+      "source": "google",
+      "medium": "organic",
+      "campaign": null
+    },
+    "pages_viewed_count": 14,
+    "products_viewed_count": 7,
+    "searches_count": 2
+  },
+  "_indexes_recomendados": [
+    "{ session_id: 1 } UNIQUE",
+    "{ customer_unique_id_ref: 1 } SPARSE (solo sesiones autenticadas)",
+    "{ expires_at: 1 } TTL_INDEX (expireAfterSeconds: 0)",
+    "{ started_at: -1 } para analiticas de sesiones recientes"
+  ]
+}

@@ -1,0 +1,89 @@
+<mxfile host="app.diagrams.net" agent="Ecommify-Gen" version="24.0.0">
+  <diagram name="Arquitectura Hibrida" id="arch-ecommify">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="&lt;b&gt;Arquitectura Híbrida de Ecommify&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:11px;font-weight:normal;&quot;&gt;PostgreSQL (fuente de verdad) + MongoDB (proyección y NoSQL)&lt;/span&gt;" style="text;html=1;align=center;fontSize=18;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1620" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Cliente final / Frontend -->
+        <mxCell id="frontend" value="&lt;b&gt;Frontend Ecommify&lt;/b&gt;&lt;br&gt;Web / Mobile" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976d2;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="700" y="100" width="200" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- API Gateway -->
+        <mxCell id="api" value="&lt;b&gt;API / BFF&lt;/b&gt;&lt;br&gt;Capa de aplicación" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#f9a825;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="700" y="230" width="200" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- PostgreSQL block -->
+        <mxCell id="pg-block" value="&lt;b&gt;PostgreSQL — fuente de verdad&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#388e3c;fontSize=13;align=center;verticalAlign=top;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="60" y="380" width="700" height="430" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pg-oltp" value="&lt;b&gt;OLTP (transaccional)&lt;/b&gt;&lt;br&gt;customer · order (particionada) · order_item&lt;br&gt;payment · order_status_history · seller&lt;br&gt;product · category · promotion&lt;br&gt;&lt;br&gt;&lt;i&gt;Tipos avanzados: JSONB, TEXT[], TSTZRANGE,&lt;br&gt;HSTORE, product_dimensions (composite)&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=white;strokeColor=#388e3c;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="80" y="420" width="320" height="170" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pg-olap" value="&lt;b&gt;OLAP (analítico)&lt;/b&gt;&lt;br&gt;mv_sales_by_category_monthly&lt;br&gt;mv_customer_segments&lt;br&gt;mv_seller_rating (proyectado)&lt;br&gt;&lt;br&gt;&lt;i&gt;Refresh diario / semanal&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=white;strokeColor=#388e3c;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="420" y="420" width="320" height="170" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pg-ext" value="&lt;b&gt;Extensiones&lt;/b&gt;&lt;br&gt;PostGIS · pg_trgm · pgcrypto · hstore · btree_gin&lt;br&gt;&lt;br&gt;&lt;b&gt;Particionamiento order&lt;/b&gt;&lt;br&gt;Hot: particiones mensuales (12 meses)&lt;br&gt;Cold: particiones anuales (histórico)&lt;br&gt;Función: create_monthly_order_partition()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=white;strokeColor=#388e3c;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="80" y="610" width="660" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- MongoDB block -->
+        <mxCell id="mongo-block" value="&lt;b&gt;MongoDB Atlas — proyección y storage NoSQL&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c5cae9;strokeColor=#3f51b5;fontSize=13;align=center;verticalAlign=top;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="840" y="380" width="800" height="430" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mongo-catalog" value="&lt;b&gt;product_catalog&lt;/b&gt;&lt;br&gt;Proyección de lectura&lt;br&gt;&lt;i&gt;denormalizada y enriquecida&lt;/i&gt;&lt;br&gt;&lt;br&gt;Embedded: category, seller&lt;br&gt;Computed: price_current,&lt;br&gt;has_active_promotion, rating.avg" style="rounded=1;whiteSpace=wrap;html=1;fillColor=white;strokeColor=#3f51b5;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="860" y="420" width="240" height="170" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mongo-reviews" value="&lt;b&gt;reviews&lt;/b&gt;&lt;br&gt;Storage primario&lt;br&gt;&lt;i&gt;Polymorphic pattern&lt;/i&gt;&lt;br&gt;&lt;br&gt;FK lógicas: order_id, product_id&lt;br&gt;Soporta reviews de producto&lt;br&gt;y de seller en una colección" style="rounded=1;whiteSpace=wrap;html=1;fillColor=white;strokeColor=#3f51b5;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="420" width="240" height="170" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mongo-analytics" value="&lt;b&gt;analytics_events&lt;/b&gt;&lt;br&gt;Storage primario&lt;br&gt;&lt;i&gt;Bucket pattern&lt;/i&gt;&lt;br&gt;&lt;br&gt;Eventos agrupados por sesión y hora&lt;br&gt;TTL: 180 días&lt;br&gt;Append-only" style="rounded=1;whiteSpace=wrap;html=1;fillColor=white;strokeColor=#3f51b5;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="420" width="240" height="170" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mongo-sessions" value="&lt;b&gt;user_sessions&lt;/b&gt;&lt;br&gt;Storage primario&lt;br&gt;&lt;i&gt;TTL nativo&lt;/i&gt;&lt;br&gt;&lt;br&gt;Sesiones HTTP efímeras&lt;br&gt;TTL: 30 días desde last_activity_at&lt;br&gt;Carrito embebido" style="rounded=1;whiteSpace=wrap;html=1;fillColor=white;strokeColor=#3f51b5;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="860" y="610" width="370" height="180" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mongo-cap" value="&lt;b&gt;Posición CAP&lt;/b&gt;&lt;br&gt;Todas las colecciones MongoDB priorizan&lt;br&gt;&lt;b&gt;AP&lt;/b&gt; (disponibilidad + tolerancia a particiones)&lt;br&gt;sobre consistencia estricta.&lt;br&gt;&lt;br&gt;Sincronización con PostgreSQL:&lt;br&gt;consistencia eventual aceptable." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#3f51b5;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="610" width="370" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- Sync layer entre PG y Mongo -->
+        <mxCell id="sync" value="&lt;b&gt;Capa de sincronización&lt;/b&gt;&lt;br&gt;CDC (Debezium) → Kafka → ETL Transformer&lt;br&gt;Fallback: ETL nocturno por lotes&lt;br&gt;Idempotente · ordenado por updated_at" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffebee;strokeColor=#c62828;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="700" y="860" width="240" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="e1" style="endArrow=classic;html=1;fontSize=10;" edge="1" parent="1" source="frontend" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="lecturas y escrituras OLTP" style="endArrow=classic;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="api" target="pg-block">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="lecturas catálogo, escrituras reviews/events/sessions" style="endArrow=classic;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="api" target="mongo-block">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="WAL / cambios" style="endArrow=classic;html=1;fontSize=10;exitX=0.5;exitY=1;entryX=0;entryY=0.5;" edge="1" parent="1" source="pg-block" target="sync">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="upsert product_catalog" style="endArrow=classic;html=1;fontSize=10;exitX=1;exitY=0.5;entryX=0.5;entryY=1;" edge="1" parent="1" source="sync" target="mongo-block">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
