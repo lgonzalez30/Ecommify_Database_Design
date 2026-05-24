@@ -28,7 +28,7 @@ Arquitectura Políglota Híbrida (heredada de la decisión de Unidad 1):
 
 ```
 Ecommify_Database_Design/
-├── README.md                                  ← estás aquí
+├── README.md                                  ← Informacion de la arquitectura de Ecommify
 ├── docs/
 │   ├── Documento_Tecnico_Diseno.docx          ← documento técnico final editable
 │   ├── Presentacion_Ejecutiva.pptx            ← presentación ejecutiva editable
