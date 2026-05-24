@@ -13,7 +13,7 @@
 
 ## Sobre este repositorio
 
-Este repositorio contiene el diseño conceptual, lógico y físico preliminar de la base de datos híbrida (PostgreSQL + MongoDB) para Ecommify, una plataforma de comercio electrónico multivendedor. El diseño consolida el trabajo de las Unidades 1 y 2 de la materia.
+Este repositorio contiene el diseño conceptual y lógico de la base de datos híbrida (PostgreSQL + MongoDB) para Ecommify, una plataforma de comercio electrónico multivendedor. El diseño consolida el trabajo de las Unidades 1 y 2 de la materia e incluye los insumos técnicos, diagramas, scripts preliminares, documento técnico y presentación ejecutiva.
 
 El dataset de referencia es **Brazilian E-Commerce by Olist** ([Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)).
 
@@ -30,7 +30,9 @@ Arquitectura Políglota Híbrida (heredada de la decisión de Unidad 1):
 Ecommify_Database_Design/
 ├── README.md                                  ← estás aquí
 ├── docs/
-│   ├── 00_borrador_documento_tecnico.md       ← documento técnico consolidado (entrada principal)
+│   ├── Documento_Tecnico_Diseno.docx          ← documento técnico final editable
+│   ├── Presentacion_Ejecutiva.pptx            ← presentación ejecutiva editable
+│   ├── 00_borrador_documento_tecnico.md       ← insumo fuente del documento técnico
 │   ├── 01_analisis_requisitos.md              ← requisitos funcionales y no funcionales
 │   ├── 02_descripcion_entidades.md            ← entidades, atributos, relaciones, cardinalidades
 │   ├── 03_decisiones_arquitectonicas.md       ← arquitectura híbrida y flujos de sincronización
@@ -67,19 +69,33 @@ Ecommify_Database_Design/
 
 ## Orden de lectura sugerido
 
-1. `docs/00_borrador_documento_tecnico.md` — documento integrador.
-2. `notebooks/Data_Exploration_Analysis.ipynb` — entender el dataset.
-3. `docs/01_analisis_requisitos.md` — qué tiene que cumplir el diseño.
-4. `docs/diagrams/ER_Ecommify.png` — modelo conceptual visual.
-5. `docs/02_descripcion_entidades.md` — detalle por entidad.
-6. `postgresql/schema/` — scripts DDL en orden numérico.
-7. `mongodb/schema/collections.md` — diseño de colecciones.
-8. `docs/03_decisiones_arquitectonicas.md` — cómo conviven los dos motores.
-9. `docs/04_matriz_decision.md` — justificación de qué entidad va a qué motor.
+1. `docs/Documento_Tecnico_Diseno.docx` — documento técnico consolidado.
+2. `docs/Presentacion_Ejecutiva.pptx` — resumen ejecutivo para socialización.
+3. `notebooks/Data_Exploration_Analysis.ipynb` — análisis exploratorio del dataset.
+4. `docs/01_analisis_requisitos.md` — requisitos funcionales y no funcionales.
+5. `docs/diagrams/ER_Ecommify.png` — modelo conceptual visual.
+6. `docs/02_descripcion_entidades.md` — detalle por entidad.
+7. `postgresql/schema/` — scripts DDL en orden numérico.
+8. `mongodb/schema/collections.md` — diseño de colecciones.
+9. `docs/03_decisiones_arquitectonicas.md` — cómo conviven los dos motores.
+10. `docs/04_matriz_decision.md` — justificación de qué entidad va a qué motor.
 
 ## Estado del entregable
 
-Este es un **borrador robusto en archivos fuente** (markdown, `.drawio`, `.sql`, `.ipynb`, `.json`). El equipo lo consolidará en el PDF académico final (`Documento_Tecnico_Diseno.pdf`) y producirá la presentación ejecutiva (`Presentacion_Ejecutiva.pdf`) en una etapa posterior.
+El repositorio incluye los componentes solicitados para la Etapa 2:
+
+- Documento técnico de diseño en formato editable: `docs/Documento_Tecnico_Diseno.docx`.
+- Presentación ejecutiva en formato editable: `docs/Presentacion_Ejecutiva.pptx`.
+- Diagramas ER y arquitectura híbrida en `.drawio` y `.png`.
+- Scripts DDL preliminares de PostgreSQL en `postgresql/schema/`.
+- Consultas de ejemplo en `postgresql/queries/`.
+- Esquemas y ejemplos de documentos MongoDB en `mongodb/schema/`.
+- Notebook de análisis exploratorio del dataset Olist en `notebooks/`.
+
+Para la entrega formal en plataforma académica, exportar los archivos editables a:
+
+- `docs/Documento_Tecnico_Diseno.pdf`
+- `docs/Presentacion_Ejecutiva.pdf`
 
 ## Referencias
 
