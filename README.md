@@ -1,70 +1,73 @@
-# Ecommify Database Design
+# Ecommify — Diseño de Base de Datos Híbrida
 
-**Proyecto integrador — Diseño y Optimización de Bases de Datos**
-**Maestría en Arquitectura de Software — Universidad de La Sabana**
-**Profesor:** Miguel Alfonso Varela Fonseca
+**Proyecto Integrador: Diseño y Optimización de Bases de Datos** **Maestría en Arquitectura de Software — Universidad de La Sabana** **Profesor:** Miguel Alfonso Varela Fonseca
 
-## Equipo
+## Equipo de Trabajo
 
 - Andrés Fernando Diaz Moreno
 - Carlos Alberto Arévalo Martínez
 - Luis Alfredo Gonzalez Mercado
 - Andrés Camilo Lopez Castro
 
-## Sobre este repositorio
+---
 
-Este repositorio contiene el diseño conceptual y lógico de la base de datos híbrida (PostgreSQL + MongoDB) para Ecommify, una plataforma de comercio electrónico multivendedor. El diseño consolida el trabajo de las Unidades 1 y 2 de la materia e incluye los insumos técnicos, diagramas, scripts preliminares, documento técnico y presentación ejecutiva.
+## 1. Descripción del Proyecto
 
-El dataset de referencia es **Brazilian E-Commerce by Olist** ([Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)).
+Este repositorio contiene el diseño conceptual, lógico y físico de la base de datos para **Ecommify**, una plataforma de comercio electrónico multivendedor (marketplace). El modelo de datos ha sido diseñado utilizando como línea base el dataset empírico **Brazilian E-Commerce by Olist**.
 
-## Enfoque arquitectónico
+El proyecto resuelve la tensión entre el procesamiento transaccional seguro (OLTP) y la alta disponibilidad para lecturas masivas y analítica (OLAP) mediante la implementación de una arquitectura políglota.
 
-Arquitectura Políglota Híbrida (heredada de la decisión de Unidad 1):
+## 2. Decisiones Arquitectónicas
 
-- **PostgreSQL** como núcleo transaccional y analítico: customers, orders, order_items, payments, products (con tipos avanzados nativos), sellers, categories, promotions, reviews indirectamente vinculadas. Incluye particionamiento de `orders`, materialized views para reporting, y extensiones PostGIS, pg_trgm y pgcrypto.
-- **MongoDB** complementario: proyección de lectura del catálogo enriquecido, storage de reviews, logs de comportamiento de usuarios y sesiones efímeras.
+La solución adopta una **Arquitectura Políglota Híbrida** estructurada en dos motores complementarios:
 
-## Cómo navegar el repositorio
+* **PostgreSQL (Fuente de Verdad / OLTP):** Gestiona el núcleo transaccional del negocio (órdenes, pagos, inventario, clientes). Garantiza consistencia estricta (ACID). Para evitar la dispersión de motores, exprime las capacidades avanzadas nativas de PostgreSQL:
+    * `JSONB` para especificaciones dinámicas del catálogo.
+    * `ARRAY` y Composite Types para atributos estructurados múltiples.
+    * `TSTZRANGE` para validación temporal nativa de promociones.
+    * Extensiones: `PostGIS` (análisis espacial de envíos), `pg_trgm` (búsqueda difusa) y particionamiento nativo (`hot/cold data`) para la tabla de órdenes.
+* **MongoDB (Proyección y NoSQL / OLAP):** Actúa como motor optimizado para lectura y alta disponibilidad (Teorema CAP: prioriza AP).
+    * Almacena una proyección denormalizada del catálogo de productos (Patrón *Extended Reference* y *Computed*).
+    * Gestiona el almacenamiento primario de datos con esquemas flexibles y alto volumen de escritura: reseñas (Patrón *Polymorphic*), analítica de eventos (Patrón *Bucket*) y sesiones de usuario (Índices *TTL*).
 
-```
+---
+
+## 3. Estructura del Repositorio y Entregables
+
+La jerarquía del código refleja la separación de responsabilidades de la arquitectura. **Para la revisión académica, se sugiere iniciar por la carpeta `docs/`**.
+
+```text
 Ecommify_Database_Design/
-├── README.md                                  ← Informacion de la arquitectura de Ecommify
-├── docs/
-│   ├── Documento_Tecnico_Diseno.docx          ← documento técnico final editable
-│   ├── Presentacion_Ejecutiva.pptx            ← presentación ejecutiva editable
-│   ├── 00_borrador_documento_tecnico.md       ← insumo fuente del documento técnico
-│   ├── 01_analisis_requisitos.md              ← requisitos funcionales y no funcionales
-│   ├── 02_descripcion_entidades.md            ← entidades, atributos, relaciones, cardinalidades
-│   ├── 03_decisiones_arquitectonicas.md       ← arquitectura híbrida y flujos de sincronización
-│   ├── 04_matriz_decision.md                  ← matriz PostgreSQL vs MongoDB + análisis CAP
-│   └── diagrams/
-│       ├── ER_Ecommify.drawio                 ← diagrama ER editable
-│       ├── ER_Ecommify.png                    ← diagrama ER exportado
-│       ├── arquitectura_hibrida.drawio        ← diagrama de arquitectura editable
-│       └── arquitectura_hibrida.png           ← diagrama de arquitectura exportado
-├── postgresql/
-│   ├── schema/                                ← scripts DDL numerados (orden de ejecución)
-│   │   ├── 00_extensions.sql
-│   │   ├── 01_types.sql
-│   │   ├── 02_tables.sql
-│   │   ├── 03_partitions.sql
-│   │   ├── 04_indexes.sql
-│   │   ├── 05_constraints.sql
-│   │   ├── 06_triggers.sql
-│   │   └── 07_materialized_views.sql
-│   ├── seed_data/
-│   │   └── README.md                          ← instrucciones para poblar desde Olist
-│   └── queries/
-│       └── ejemplos_consultas.sql             ← consultas que aprovechan tipos avanzados
+├── docs/                                  # Entregables formales de la asignatura
+│   ├── Documento_Tecnico_Diseno.pdf       # Especificación arquitectónica y diseño ER (Normas APA 7)
+│   └── Presentacion_Ejecutiva.pdf         # Síntesis directiva del proyecto
 ├── mongodb/
-│   └── schema/
-│       ├── collections.md                     ← descripción de colecciones y patrones
-│       ├── product_catalog.json               ← ejemplo de documento (proyección de catálogo)
-│       ├── reviews.json                       ← ejemplo de documento
-│       ├── analytics_events.json              ← ejemplo de documento
-│       └── user_sessions.json                 ← ejemplo de documento (con TTL)
-└── notebooks/
-    └── Data_Exploration_Analysis.ipynb        ← EDA enriquecido del dataset Olist
+│   └── schema/                            # Módulo NoSQL
+│       ├── analytics_events.json          # Esquema de eventos (Bucket Pattern)
+│       ├── collections.md                 # Documentación de colecciones y patrones
+│       ├── product_catalog.json           # Proyección de lectura (Extended Reference)
+│       ├── reviews.json                   # Esquema de reseñas (Polymorphic Pattern)
+│       └── user_sessions.json             # Esquema de sesiones efímeras (TTL)
+├── notebooks/
+│   └── Data_Exploration_Analysis.ipynb    # Análisis Exploratorio de Datos (EDA) del dataset Olist
+├── pg_data/                               # Volumen local de Docker (Ignorado en Git)
+├── postgresql/                            # Módulo Relacional Avanzado
+│   ├── queries/
+│   │   └── ejemplos_consultas.sql         # Pruebas de validación (JSONB, PostGIS, particiones)
+│   ├── schema/                            # Orquestación DDL automatizada (00 a 08)
+│   │   ├── 00_extensions.sql              # Habilitación de PostGIS, pg_trgm, etc.
+│   │   ├── 01_types.sql                   # Tipos compuestos y ENUMs
+│   │   ├── 02_tables.sql                  # Tablas normalizadas en 3FN
+│   │   ├── 03_partitions.sql              # Particionamiento de órdenes
+│   │   ├── 04_indexes.sql                 # Índices GIN, GiST y B-Tree
+│   │   ├── 05_constraints.sql             # Reglas de integridad y chequeos
+│   │   ├── 06_triggers.sql                # Automatización de auditoría y fechas
+│   │   ├── 07_5_mock_data.sql             # Datos de prueba controlados
+│   │   ├── 07_materialized_views.sql      # Vistas para reportería OLAP
+│   │   └── 08_roles_permissions.sql       # Implementación RBAC (OLTP vs Analítica)
+├── .gitignore
+├── docker-compose.yml                     # Definición de infraestructura local
+└── README.md
 ```
 
 ## Orden de lectura sugerido
