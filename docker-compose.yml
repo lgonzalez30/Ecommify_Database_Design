@@ -20,6 +20,26 @@ services:
       timeout: 5s
       retries: 5
 
+  mongodb:
+    image: mongo:7.0
+    container_name: ecommify_mongodb_local
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: MongoRootPass2026!
+      MONGO_INITDB_DATABASE: ecommify
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo_data:/data/db
+      - ./mongodb/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - ecommify_net
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 networks:
   ecommify_net:
     driver: bridge

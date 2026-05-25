@@ -42,6 +42,11 @@ Ecommify_Database_Design/
 │   ├── Documento_Tecnico_Diseno.pdf       # Especificación arquitectónica y diseño ER (Normas APA 7)
 │   └── Presentacion_Ejecutiva.pdf         # Síntesis directiva del proyecto
 ├── mongodb/
+│   ├── README.md                          # Guia de prueba local MongoDB
+│   ├── init/
+│   │   └── 01_init_collections.js         # Validadores, indices y datos mock
+│   ├── queries/
+│   │   └── validation_queries.js          # Pruebas de conexion, indices y consultas
 │   └── schema/                            # Módulo NoSQL
 │       ├── analytics_events.json          # Esquema de eventos (Bucket Pattern)
 │       ├── collections.md                 # Documentación de colecciones y patrones
@@ -50,6 +55,7 @@ Ecommify_Database_Design/
 │       └── user_sessions.json             # Esquema de sesiones efímeras (TTL)
 ├── notebooks/
 │   └── Data_Exploration_Analysis.ipynb    # Análisis Exploratorio de Datos (EDA) del dataset Olist
+├── mongo_data/                            # Volumen local MongoDB (ignorado en Git)
 ├── pg_data/                               # Volumen local de Docker (Ignorado en Git)
 ├── postgresql/                            # Módulo Relacional Avanzado
 │   ├── queries/
@@ -80,8 +86,9 @@ Ecommify_Database_Design/
 6. `docs/02_descripcion_entidades.md` — detalle por entidad.
 7. `postgresql/schema/` — scripts DDL en orden numérico.
 8. `mongodb/schema/collections.md` — diseño de colecciones.
-9. `docs/03_decisiones_arquitectonicas.md` — cómo conviven los dos motores.
-10. `docs/04_matriz_decision.md` — justificación de qué entidad va a qué motor.
+9. `mongodb/README.md` — prueba local de MongoDB con Docker.
+10. `docs/03_decisiones_arquitectonicas.md` — cómo conviven los dos motores.
+11. `docs/04_matriz_decision.md` — justificación de qué entidad va a qué motor.
 
 ## Estado del entregable
 
@@ -93,6 +100,7 @@ El repositorio incluye los componentes solicitados para la Etapa 2:
 - Scripts DDL preliminares de PostgreSQL en `postgresql/schema/`.
 - Consultas de ejemplo en `postgresql/queries/`.
 - Esquemas y ejemplos de documentos MongoDB en `mongodb/schema/`.
+- Inicializacion local de MongoDB con validadores, indices y datos mock en `mongodb/init/`.
 - Notebook de análisis exploratorio del dataset Olist en `notebooks/`.
 
 Para la entrega formal en plataforma académica, exportar los archivos editables a:

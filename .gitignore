@@ -2,3 +2,4 @@ tools/
 .DS_Store
 __pycache__/
 *.pyc
+mongo_data/
