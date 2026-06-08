@@ -54,9 +54,9 @@ ANALYZE geolocation;
 
 SELECT
     schemaname,
-    indexname,
-    tablename,
+    indexrelname AS indexname,
+    relname AS tablename,
     pg_size_pretty(pg_relation_size(indexrelid)) AS index_size
 FROM pg_stat_user_indexes
-WHERE indexname LIKE 'idx_u4_%'
-ORDER BY indexname;
+WHERE indexrelname LIKE 'idx_u4_%'
+ORDER BY indexrelname;

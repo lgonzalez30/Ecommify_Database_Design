@@ -40,6 +40,12 @@ Desde la raiz del repositorio:
 docker compose up -d postgres
 ```
 
+Para la Etapa 2 se recomienda usar el compose aislado `docker-compose.u4.yml`, que crea un volumen limpio `pg_data_u4/` y evita depender del `pg_data/` principal:
+
+```bash
+./unidad_4/etapa_2_implementacion/run_etapa_2.sh
+```
+
 Validar conexion:
 
 ```bash

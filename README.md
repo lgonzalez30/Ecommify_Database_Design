@@ -76,6 +76,7 @@ Ecommify_Database_Design/
 │   └── etapa_2_implementacion/            # Scripts EXPLAIN ANALYZE, índices U4 y métricas
 ├── .gitignore
 ├── docker-compose.yml                     # Definición de infraestructura local
+├── docker-compose.u4.yml                  # PostgreSQL aislado para pruebas de Unidad 4
 └── README.md
 ```
 

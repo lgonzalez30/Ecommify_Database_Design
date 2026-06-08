@@ -23,37 +23,39 @@ Desde la raiz del repositorio:
 
 Este comando levanta PostgreSQL, espera el healthcheck, ejecuta baseline, crea indices, ejecuta consultas optimizadas, valida particionamiento y guarda archivos en `resultados/`.
 
+El runner usa `docker-compose.u4.yml` y el contenedor `ecommify_postgres_u4` con volumen `pg_data_u4/`. Esto evita depender del volumen principal `pg_data/`, que puede quedar con estado local previo.
+
 Ejecucion manual equivalente:
 
 ```bash
-docker compose up -d postgres
+docker compose -f docker-compose.u4.yml up -d postgres_u4
 ```
 
 Baseline:
 
 ```bash
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
+docker exec -i ecommify_postgres_u4 psql -U postgres -d ecommify \
   < unidad_4/etapa_2_implementacion/sql/01_baseline_explain_analyze.sql
 ```
 
 Indices:
 
 ```bash
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
+docker exec -i ecommify_postgres_u4 psql -U postgres -d ecommify \
   < unidad_4/etapa_2_implementacion/sql/02_indices_optimizacion_u4.sql
 ```
 
 Consultas optimizadas:
 
 ```bash
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
+docker exec -i ecommify_postgres_u4 psql -U postgres -d ecommify \
   < unidad_4/etapa_2_implementacion/sql/03_consultas_optimizadas.sql
 ```
 
 Particionamiento:
 
 ```bash
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
+docker exec -i ecommify_postgres_u4 psql -U postgres -d ecommify \
   < unidad_4/etapa_2_implementacion/sql/04_validacion_particionamiento.sql
 ```
 
@@ -70,11 +72,11 @@ El script `run_etapa_2.sh` guarda automaticamente las salidas en:
 Para guardar salida manualmente:
 
 ```bash
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
+docker exec -i ecommify_postgres_u4 psql -U postgres -d ecommify \
   < unidad_4/etapa_2_implementacion/sql/01_baseline_explain_analyze.sql \
   > unidad_4/etapa_2_implementacion/resultados/baseline_explain.txt
 
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
+docker exec -i ecommify_postgres_u4 psql -U postgres -d ecommify \
   < unidad_4/etapa_2_implementacion/sql/03_consultas_optimizadas.sql \
   > unidad_4/etapa_2_implementacion/resultados/optimized_explain.txt
 ```

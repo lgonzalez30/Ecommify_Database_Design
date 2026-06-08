@@ -19,18 +19,32 @@ if ! docker info >/dev/null 2>&1; then
 fi
 
 echo "== Levantando PostgreSQL =="
-docker compose up -d postgres
+docker compose -f docker-compose.u4.yml up -d postgres_u4
 
-echo "== Esperando healthcheck de ecommify_postgres_local =="
+echo "== Esperando healthcheck de ecommify_postgres_u4 =="
 for i in {1..30}; do
-  status="$(docker inspect -f '{{.State.Health.Status}}' ecommify_postgres_local 2>/dev/null || true)"
+  status="$(docker inspect -f '{{.State.Health.Status}}' ecommify_postgres_u4 2>/dev/null || true)"
   if [[ "$status" == "healthy" ]]; then
     echo "PostgreSQL healthy."
     break
   fi
   if [[ "$i" == "30" ]]; then
     echo "ERROR: PostgreSQL no llego a estado healthy. Estado actual: ${status:-desconocido}" >&2
-    docker logs ecommify_postgres_local >&2 || true
+    docker logs ecommify_postgres_u4 >&2 || true
+    exit 1
+  fi
+  sleep 2
+done
+
+echo "== Esperando inicializacion completa del esquema =="
+for i in {1..60}; do
+  if docker exec ecommify_postgres_u4 psql -U postgres -d ecommify -tAc "SELECT to_regclass('public.\"order\"') IS NOT NULL" 2>/dev/null | grep -q "t"; then
+    echo "Esquema PostgreSQL disponible."
+    break
+  fi
+  if [[ "$i" == "60" ]]; then
+    echo "ERROR: El esquema no estuvo disponible despues de esperar la inicializacion." >&2
+    docker logs ecommify_postgres_u4 >&2 || true
     exit 1
   fi
   sleep 2
@@ -44,22 +58,22 @@ partition_file="$RESULTS_DIR/partition_validation_${timestamp}.txt"
 summary_file="$RESULTS_DIR/resumen_metricas_${timestamp}.md"
 
 echo "== Ejecutando baseline =="
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
+docker exec -i ecommify_postgres_u4 psql -v ON_ERROR_STOP=1 -U postgres -d ecommify \
   < unidad_4/etapa_2_implementacion/sql/01_baseline_explain_analyze.sql \
   | tee "$baseline_file"
 
 echo "== Creando indices U4 =="
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
+docker exec -i ecommify_postgres_u4 psql -v ON_ERROR_STOP=1 -U postgres -d ecommify \
   < unidad_4/etapa_2_implementacion/sql/02_indices_optimizacion_u4.sql \
   | tee "$indexes_file"
 
 echo "== Ejecutando consultas optimizadas =="
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
+docker exec -i ecommify_postgres_u4 psql -v ON_ERROR_STOP=1 -U postgres -d ecommify \
   < unidad_4/etapa_2_implementacion/sql/03_consultas_optimizadas.sql \
   | tee "$optimized_file"
 
 echo "== Validando particionamiento =="
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
+docker exec -i ecommify_postgres_u4 psql -v ON_ERROR_STOP=1 -U postgres -d ecommify \
   < unidad_4/etapa_2_implementacion/sql/04_validacion_particionamiento.sql \
   | tee "$partition_file"
 
