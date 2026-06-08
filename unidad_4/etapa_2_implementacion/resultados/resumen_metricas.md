@@ -1,5 +1,7 @@
 # Resumen de metricas — Unidad 4 Etapa 2
 
+Para la explicacion completa de lo ejecutado, ver `documentacion_ejecucion.md`.
+
 Fecha de ejecucion: 2026-06-08  
 Entorno: Docker local, contenedor `ecommify_postgres_u4`, PostgreSQL 16 + PostGIS  
 Base: `ecommify` inicializada desde `postgresql/schema/`  

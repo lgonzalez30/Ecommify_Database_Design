@@ -63,6 +63,8 @@ docker exec -i ecommify_postgres_u4 psql -U postgres -d ecommify \
 
 El script `run_etapa_2.sh` guarda automaticamente las salidas en:
 
+- `resultados/documentacion_ejecucion.md` como explicacion narrativa de lo ejecutado.
+- `resultados/resumen_metricas.md` como resumen curado de resultados.
 - `resultados/baseline_explain_<timestamp>.txt`
 - `resultados/indices_u4_<timestamp>.txt`
 - `resultados/optimized_explain_<timestamp>.txt`
