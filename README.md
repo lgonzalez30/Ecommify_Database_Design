@@ -71,6 +71,9 @@ Ecommify_Database_Design/
 │   │   ├── 07_5_mock_data.sql             # Datos de prueba controlados
 │   │   ├── 07_materialized_views.sql      # Vistas para reportería OLAP
 │   │   └── 08_roles_permissions.sql       # Implementación RBAC (OLTP vs Analítica)
+├── unidad_4/                              # Optimización avanzada de rendimiento PostgreSQL
+│   ├── etapa_1_investigacion/             # EXPLAIN, consultas críticas, índices y particiones
+│   └── etapa_2_implementacion/            # Scripts EXPLAIN ANALYZE, índices U4 y métricas
 ├── .gitignore
 ├── docker-compose.yml                     # Definición de infraestructura local
 └── README.md
@@ -87,8 +90,9 @@ Ecommify_Database_Design/
 7. `postgresql/schema/` — scripts DDL en orden numérico.
 8. `mongodb/schema/collections.md` — diseño de colecciones.
 9. `mongodb/README.md` — prueba local de MongoDB con Docker.
-10. `docs/03_decisiones_arquitectonicas.md` — cómo conviven los dos motores.
-11. `docs/04_matriz_decision.md` — justificación de qué entidad va a qué motor.
+10. `unidad_4/README.md` — optimización avanzada PostgreSQL.
+11. `docs/03_decisiones_arquitectonicas.md` — cómo conviven los dos motores.
+12. `docs/04_matriz_decision.md` — justificación de qué entidad va a qué motor.
 
 ## Estado del entregable
 
@@ -101,6 +105,7 @@ El repositorio incluye los componentes solicitados para la Etapa 2:
 - Consultas de ejemplo en `postgresql/queries/`.
 - Esquemas y ejemplos de documentos MongoDB en `mongodb/schema/`.
 - Inicializacion local de MongoDB con validadores, indices y datos mock en `mongodb/init/`.
+- Carpeta de Unidad 4 con investigación, implementación y plantilla de métricas en `unidad_4/`.
 - Notebook de análisis exploratorio del dataset Olist en `notebooks/`.
 
 Para la entrega formal en plataforma académica, exportar los archivos editables a:
