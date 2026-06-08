@@ -18,6 +18,14 @@ Aplicar optimizaciones practicas en PostgreSQL y documentar mejoras cuantificabl
 Desde la raiz del repositorio:
 
 ```bash
+./unidad_4/etapa_2_implementacion/run_etapa_2.sh
+```
+
+Este comando levanta PostgreSQL, espera el healthcheck, ejecuta baseline, crea indices, ejecuta consultas optimizadas, valida particionamiento y guarda archivos en `resultados/`.
+
+Ejecucion manual equivalente:
+
+```bash
 docker compose up -d postgres
 ```
 
@@ -51,7 +59,15 @@ docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
 
 ## Como guardar evidencia
 
-Para guardar salida en archivos:
+El script `run_etapa_2.sh` guarda automaticamente las salidas en:
+
+- `resultados/baseline_explain_<timestamp>.txt`
+- `resultados/indices_u4_<timestamp>.txt`
+- `resultados/optimized_explain_<timestamp>.txt`
+- `resultados/partition_validation_<timestamp>.txt`
+- `resultados/resumen_metricas_<timestamp>.md`
+
+Para guardar salida manualmente:
 
 ```bash
 docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \

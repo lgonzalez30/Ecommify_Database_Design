@@ -3,3 +3,5 @@ tools/
 __pycache__/
 *.pyc
 mongo_data/
+unidad_4/etapa_2_implementacion/resultados/*.txt
+unidad_4/etapa_2_implementacion/resultados/resumen_metricas_*.md
