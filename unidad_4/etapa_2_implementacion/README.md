@@ -1,34 +1,42 @@
-# Etapa 2 — Implementacion formativa
+# Etapa 2 - Implementación formativa
 
-## Proposito
+## Propósito
 
-Aplicar optimizaciones practicas en PostgreSQL y documentar mejoras cuantificables con `EXPLAIN (ANALYZE, BUFFERS)`.
+Aplicar optimizaciones prácticas en PostgreSQL y documentar mejoras cuantificables con `EXPLAIN (ANALYZE, BUFFERS)`.
 
 ## Scripts
 
 | Orden | Archivo | Uso |
 |---:|---|---|
-| 1 | `sql/01_baseline_explain_analyze.sql` | Captura planes y metricas antes de aplicar indices U4 |
-| 2 | `sql/02_indices_optimizacion_u4.sql` | Crea indices especializados adicionales |
+| 0 | `sql/00_seed_synthetic_data.sql` | Genera el dataset sintético (~150k órdenes) para medir con volumen amplio |
+| 1 | `sql/01_baseline_explain_analyze.sql` | Captura planes y métricas antes de aplicar índices U4 |
+| 2 | `sql/02_indices_optimizacion_u4.sql` | Crea índices especializados adicionales |
 | 3 | `sql/03_consultas_optimizadas.sql` | Ejecuta versiones optimizadas de las consultas |
 | 4 | `sql/04_validacion_particionamiento.sql` | Valida particiones, pruning y mantenimiento |
 
-## Ejecucion local con Docker
+## Ejecución local con Docker
 
-Desde la raiz del repositorio:
+Desde la raíz del repositorio:
 
 ```bash
 ./unidad_4/etapa_2_implementacion/run_etapa_2.sh
 ```
 
-Este comando levanta PostgreSQL, espera el healthcheck, ejecuta baseline, crea indices, ejecuta consultas optimizadas, valida particionamiento y guarda archivos en `resultados/`.
+Este comando levanta PostgreSQL, espera el healthcheck, genera el dataset sintético, ejecuta baseline, crea índices, ejecuta consultas optimizadas, valida particionamiento y guarda archivos en `resultados/`.
 
 El runner usa `docker-compose.u4.yml` y el contenedor `ecommify_postgres_u4` con volumen `pg_data_u4/`. Esto evita depender del volumen principal `pg_data/`, que puede quedar con estado local previo.
 
-Ejecucion manual equivalente:
+Ejecución manual:
 
 ```bash
 docker compose -f docker-compose.u4.yml up -d postgres_u4
+```
+
+Datos sintéticos (~150k órdenes):
+
+```bash
+docker exec -i ecommify_postgres_u4 psql -U postgres -d ecommify \
+  < unidad_4/etapa_2_implementacion/sql/00_seed_synthetic_data.sql
 ```
 
 Baseline:
@@ -38,7 +46,7 @@ docker exec -i ecommify_postgres_u4 psql -U postgres -d ecommify \
   < unidad_4/etapa_2_implementacion/sql/01_baseline_explain_analyze.sql
 ```
 
-Indices:
+Índices:
 
 ```bash
 docker exec -i ecommify_postgres_u4 psql -U postgres -d ecommify \
@@ -59,12 +67,13 @@ docker exec -i ecommify_postgres_u4 psql -U postgres -d ecommify \
   < unidad_4/etapa_2_implementacion/sql/04_validacion_particionamiento.sql
 ```
 
-## Como guardar evidencia
+## Cómo guardar evidencia
 
-El script `run_etapa_2.sh` guarda automaticamente las salidas en:
+El script `run_etapa_2.sh` guarda automáticamente las salidas en:
 
-- `resultados/documentacion_ejecucion.md` como explicacion narrativa de lo ejecutado.
+- `resultados/documentacion_ejecucion.md` como explicación narrativa de lo ejecutado.
 - `resultados/resumen_metricas.md` como resumen curado de resultados.
+- `resultados/seed_synthetic_<timestamp>.txt`
 - `resultados/baseline_explain_<timestamp>.txt`
 - `resultados/indices_u4_<timestamp>.txt`
 - `resultados/optimized_explain_<timestamp>.txt`
@@ -85,14 +94,14 @@ docker exec -i ecommify_postgres_u4 psql -U postgres -d ecommify \
 
 Luego llenar `resultados/plantilla_metricas.md`.
 
-## Tecnicas aplicadas
+## Técnicas aplicadas
 
 - Reescritura de predicados para evitar funciones sobre columnas en `WHERE`.
 - Filtrado temprano por fechas/estado para habilitar pruning.
 - Uso de materialized views para agregaciones recurrentes.
-- Indices especializados: BRIN, B-tree compuesto, GIN de expresion, parciales.
+- Índices especializados: BRIN, B-tree compuesto, GIN de expresión, parciales.
 - Uso de `ST_DWithin` antes de `ST_Distance` en consultas espaciales.
 
 ## Nota
 
-Si la base solo contiene datos mock, el impacto medido sera bajo. La evidencia mas fuerte se obtiene cargando datos Olist o generando datos sinteticos antes de comparar planes.
+Con el dataset sintético (~150k órdenes) las mejoras son sustancialmente medibles y reproducibles. Si la base solo contiene los datos mock mínimos, el impacto medido será bajo.

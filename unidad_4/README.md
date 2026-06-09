@@ -1,21 +1,24 @@
-# Unidad 4 — Optimizacion avanzada de rendimiento en PostgreSQL
+# Unidad 4 - Optimización avanzada de rendimiento en PostgreSQL
 
-Esta carpeta organiza los insumos de la Unidad 4 para Ecommify. La base de datos se reutiliza desde la carpeta principal del proyecto (`Ecommify_Database_Design`) y se ejecuta localmente con Docker mediante `docker-compose.yml`.
+Esta carpeta organiza los insumos de la Unidad 4 para Ecommify. La base de datos se reutiliza desde la carpeta principal del proyecto (`Ecommify_Database_Design`) y se ejecuta localmente con Docker.
 
 ## Objetivo
 
-Aplicar tecnicas avanzadas de optimizacion en PostgreSQL:
+Aplicar técnicas avanzadas de optimización en PostgreSQL:
 
-- Analisis de planes de ejecucion con `EXPLAIN` y `EXPLAIN (ANALYZE, BUFFERS)`.
-- Diseno de indices especializados: B-tree, GIN, GiST, BRIN, parciales y de expresion.
-- Particionamiento declarativo y validacion de partition pruning.
-- Reescritura de consultas criticas para reducir tiempo de ejecucion y bloques leidos.
+- Análisis de planes de ejecución con `EXPLAIN` y `EXPLAIN (ANALYZE, BUFFERS)`.
+- Diseño de índices especializados: B-tree, GIN, GiST, BRIN, parciales y de expresión.
+- Particionamiento declarativo y validación de partition pruning.
+- Reescritura de consultas críticas para reducir tiempo de ejecución y bloques leídos.
 
 ## Estructura
 
 ```text
 unidad_4/
 ├── README.md
+├── entregables/
+│   ├── Documento_Etapa1_Investigacion.md      # Entregable formal Etapa 1 (+ .docx)
+│   └── Documento_Etapa2_Implementacion_Resultados.md  # Entregable formal Etapa 2 (+ .docx)
 ├── etapa_1_investigacion/
 │   ├── README.md
 │   ├── 01_consultas_criticas.sql
@@ -23,69 +26,46 @@ unidad_4/
 │   └── 03_particionamiento.md
 └── etapa_2_implementacion/
     ├── README.md
+    ├── run_etapa_2.sh
     ├── sql/
+    │   ├── 00_seed_synthetic_data.sql
     │   ├── 01_baseline_explain_analyze.sql
     │   ├── 02_indices_optimizacion_u4.sql
     │   ├── 03_consultas_optimizadas.sql
     │   └── 04_validacion_particionamiento.sql
     └── resultados/
-        └── plantilla_metricas.md
+        ├── documentacion_ejecucion.md
+        ├── plantilla_metricas.md
+        └── resumen_metricas.md
 ```
 
 ## Prerrequisitos
 
-Desde la raiz del repositorio:
+Para la Etapa 2 se usa el compose aislado `docker-compose.u4.yml`, que crea un volumen limpio `pg_data_u4/` (contenedor `ecommify_postgres_u4`) y evita depender del `pg_data/` principal:
 
 ```bash
-docker compose up -d postgres
+docker compose -f docker-compose.u4.yml up -d postgres_u4
 ```
 
-Para la Etapa 2 se recomienda usar el compose aislado `docker-compose.u4.yml`, que crea un volumen limpio `pg_data_u4/` y evita depender del `pg_data/` principal:
+Validar conexión:
 
 ```bash
-./unidad_4/etapa_2_implementacion/run_etapa_2.sh
-```
-
-Validar conexion:
-
-```bash
-docker exec -it ecommify_postgres_local psql -U postgres -d ecommify -c "SELECT version();"
+docker exec -it ecommify_postgres_u4 psql -U postgres -d ecommify -c "SELECT version();"
 ```
 
 ## Orden recomendado de trabajo
 
 1. Leer `etapa_1_investigacion/README.md`.
-2. Ejecutar las consultas criticas de `etapa_1_investigacion/01_consultas_criticas.sql` con `EXPLAIN`.
-3. Ejecutar el baseline real:
+2. Ejecutar las consultas críticas de `etapa_1_investigacion/01_consultas_criticas.sql` con `EXPLAIN`.
+3. Ejecutar el flujo completo de la Etapa 2 (genera datos, baseline, índices, optimizado y validación):
 
 ```bash
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
-  < unidad_4/etapa_2_implementacion/sql/01_baseline_explain_analyze.sql
+./unidad_4/etapa_2_implementacion/run_etapa_2.sh
 ```
 
-4. Aplicar indices de optimizacion:
+   De forma manual, el orden es: `00_seed_synthetic_data.sql` → `01_baseline_explain_analyze.sql` → `02_indices_optimizacion_u4.sql` → `03_consultas_optimizadas.sql` → `04_validacion_particionamiento.sql`.
+4. Registrar resultados en `etapa_2_implementacion/resultados/plantilla_metricas.md`.
 
-```bash
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
-  < unidad_4/etapa_2_implementacion/sql/02_indices_optimizacion_u4.sql
-```
+## Nota sobre métricas
 
-5. Ejecutar consultas optimizadas:
-
-```bash
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
-  < unidad_4/etapa_2_implementacion/sql/03_consultas_optimizadas.sql
-```
-
-6. Validar particionamiento:
-
-```bash
-docker exec -i ecommify_postgres_local psql -U postgres -d ecommify \
-  < unidad_4/etapa_2_implementacion/sql/04_validacion_particionamiento.sql
-```
-
-7. Registrar resultados en `etapa_2_implementacion/resultados/plantilla_metricas.md`.
-
-## Nota sobre metricas
-
-Las metricas reales dependen del volumen cargado. Con los datos mock actuales los tiempos seran muy bajos; para observar mejoras significativas conviene cargar una muestra amplia del dataset Olist o generar datos sinteticos antes de medir.
+Las métricas reales dependen del volumen cargado. El script `00_seed_synthetic_data.sql` genera ~150.000 órdenes (con `order_item` y `payment`) distribuidas en las particiones 2025-2026, de modo que las mejoras de índices, reescrituras y particionamiento sean medibles y reproducibles.

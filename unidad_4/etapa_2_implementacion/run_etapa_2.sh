@@ -56,6 +56,12 @@ indexes_file="$RESULTS_DIR/indices_u4_${timestamp}.txt"
 optimized_file="$RESULTS_DIR/optimized_explain_${timestamp}.txt"
 partition_file="$RESULTS_DIR/partition_validation_${timestamp}.txt"
 summary_file="$RESULTS_DIR/resumen_metricas_${timestamp}.md"
+seed_file="$RESULTS_DIR/seed_synthetic_${timestamp}.txt"
+
+echo "== Generando datos sinteticos (~150k ordenes) =="
+docker exec -i ecommify_postgres_u4 psql -v ON_ERROR_STOP=1 -U postgres -d ecommify \
+  < unidad_4/etapa_2_implementacion/sql/00_seed_synthetic_data.sql \
+  | tee "$seed_file"
 
 echo "== Ejecutando baseline =="
 docker exec -i ecommify_postgres_u4 psql -v ON_ERROR_STOP=1 -U postgres -d ecommify \
