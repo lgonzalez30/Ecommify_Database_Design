@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="430" viewBox="0 0 760 430">
+<rect width="100%" height="100%" fill="white"/><text x="380" y="30" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold">Throughput por tamaño del dataset (10 usuarios)</text>
+<line x1="75" y1="355" x2="715" y2="355" stroke="#e5e7eb"/><text x="67" y="359" text-anchor="end" font-family="Arial" font-size="12">0.0</text>
+<line x1="75" y1="295" x2="715" y2="295" stroke="#e5e7eb"/><text x="67" y="299" text-anchor="end" font-family="Arial" font-size="12">143.0</text>
+<line x1="75" y1="235" x2="715" y2="235" stroke="#e5e7eb"/><text x="67" y="239" text-anchor="end" font-family="Arial" font-size="12">286.0</text>
+<line x1="75" y1="175" x2="715" y2="175" stroke="#e5e7eb"/><text x="67" y="179" text-anchor="end" font-family="Arial" font-size="12">429.1</text>
+<line x1="75" y1="115.00000000000003" x2="715" y2="115.00000000000003" stroke="#e5e7eb"/><text x="67" y="119.00000000000003" text-anchor="end" font-family="Arial" font-size="12">572.1</text>
+<line x1="75" y1="55" x2="715" y2="55" stroke="#e5e7eb"/><text x="67" y="59" text-anchor="end" font-family="Arial" font-size="12">715.1</text>
+<polyline points="75,94.13043478260869 395,285.89100414591644 715,316.43134046541235" fill="none" stroke="#2563eb" stroke-width="3"/>
+<circle cx="75" cy="94.13043478260869" r="5" fill="#2563eb"/><text x="75" y="82.13043478260869" text-anchor="middle" font-family="Arial" font-size="12">621.8</text><text x="75" y="380" text-anchor="middle" font-family="Arial" font-size="13">S</text>
+<circle cx="395" cy="285.89100414591644" r="5" fill="#2563eb"/><text x="395" y="273.89100414591644" text-anchor="middle" font-family="Arial" font-size="12">164.7</text><text x="395" y="380" text-anchor="middle" font-family="Arial" font-size="13">M</text>
+<circle cx="715" cy="316.43134046541235" r="5" fill="#2563eb"/><text x="715" y="304.43134046541235" text-anchor="middle" font-family="Arial" font-size="12">91.9</text><text x="715" y="380" text-anchor="middle" font-family="Arial" font-size="13">L</text>
+<text x="380" y="415" text-anchor="middle" font-family="Arial" font-size="14">Escala del dataset</text><text transform="translate(18 215) rotate(-90)" text-anchor="middle" font-family="Arial" font-size="14">Solicitudes/s</text></svg>

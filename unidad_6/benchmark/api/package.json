@@ -1,0 +1,12 @@
+{
+  "name": "ecommify-u6-benchmark-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "mongodb": "6.17.0",
+    "pg": "8.16.3"
+  }
+}
+

@@ -2,7 +2,10 @@ tools/
 .DS_Store
 __pycache__/
 *.pyc
+node_modules/
 mongo_data/
 pg_data_u4/
+unidad_6/benchmark/resultados/*.jtl
+unidad_6/benchmark/resultados/*-report/
 unidad_4/etapa_2_implementacion/resultados/*.txt
 unidad_4/etapa_2_implementacion/resultados/resumen_metricas_*.md

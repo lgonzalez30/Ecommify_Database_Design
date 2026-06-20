@@ -1,0 +1,103 @@
+services:
+  postgres-bench:
+    image: postgres:16-alpine
+    container_name: ecommify_u6_postgres
+    environment:
+      POSTGRES_DB: ecommify_bench
+      POSTGRES_USER: ecommify
+      POSTGRES_PASSWORD: ecommify_bench
+    ports:
+      - "55436:5432"
+    volumes:
+      - pg_bench_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+      - ./postgres/scale.sql:/benchmark/scale.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecommify -d ecommify_bench"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    networks: [benchmark]
+
+  mongo-bench:
+    image: mongo:7.0
+    container_name: ecommify_u6_mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ecommify
+      MONGO_INITDB_ROOT_PASSWORD: ecommify_bench
+      MONGO_INITDB_DATABASE: ecommify_bench
+    ports:
+      - "27026:27017"
+    volumes:
+      - mongo_bench_data:/data/db
+      - ./mongo/init.js:/docker-entrypoint-initdb.d/01_init.js:ro
+      - ./mongo/scale.js:/benchmark/scale.js:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--username", "ecommify", "--password", "ecommify_bench", "--authenticationDatabase", "admin", "--eval", "db.adminCommand('ping').ok"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+    networks: [benchmark]
+
+  benchmark-api:
+    build: ./api
+    container_name: ecommify_u6_api
+    environment:
+      PORT: "3000"
+      PGHOST: postgres-bench
+      PGPORT: "5432"
+      PGDATABASE: ecommify_bench
+      PGUSER: ecommify
+      PGPASSWORD: ecommify_bench
+      MONGO_URL: mongodb://ecommify:ecommify_bench@mongo-bench:27017/ecommify_bench?authSource=admin
+    ports:
+      - "3006:3000"
+    depends_on:
+      postgres-bench:
+        condition: service_healthy
+      mongo-bench:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 3s
+      timeout: 5s
+      retries: 20
+    networks: [benchmark]
+
+  jmeter:
+    image: alpine/jmeter:5.6.3
+    profiles: [load]
+    environment:
+      JVM_XMS: "256"
+      JVM_XMX: "512"
+    volumes:
+      - ./jmeter:/tests:ro
+      - ./resultados:/results
+    command:
+      - -n
+      - -t
+      - /tests/ecommify.jmx
+      - -l
+      - /results/${RUN_ID:-manual}.jtl
+      - -e
+      - -o
+      - /results/${RUN_ID:-manual}-report
+      - -Jusers=${USERS:-10}
+      - -Jramp_seconds=${RAMP_SECONDS:-10}
+      - -Jduration_seconds=${DURATION_SECONDS:-60}
+      - -Jhost=benchmark-api
+      - -Jport=3000
+      - -Jmax_orders=${MAX_ORDERS:-10000}
+      - -Jmax_products=${MAX_PRODUCTS:-5000}
+    depends_on:
+      benchmark-api:
+        condition: service_healthy
+    networks: [benchmark]
+
+volumes:
+  pg_bench_data:
+  mongo_bench_data:
+
+networks:
+  benchmark:
+    name: ecommify_u6_benchmark

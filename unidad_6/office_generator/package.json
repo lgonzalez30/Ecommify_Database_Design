@@ -1,0 +1,10 @@
+{
+  "name": "ecommify-office-generator",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "docx": "9.5.1",
+    "pptxgenjs": "4.0.1",
+    "sharp": "^0.35.2"
+  }
+}

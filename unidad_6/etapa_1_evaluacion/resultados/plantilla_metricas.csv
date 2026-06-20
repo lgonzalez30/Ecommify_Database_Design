@@ -1,0 +1,2 @@
+timestamp,motor,version,escala,carga,usuarios,corrida,duracion_s,operaciones_exitosas,operaciones_fallidas,throughput_ops_s,latencia_p50_ms,latencia_p95_ms,latencia_p99_ms,cpu_pct,memoria_mb,filas_documentos_examinados,filas_documentos_devuelto,notas
+
