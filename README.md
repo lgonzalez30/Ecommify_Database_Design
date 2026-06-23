@@ -74,6 +74,16 @@ Ecommify_Database_Design/
 ├── unidad_4/                              # Optimización avanzada de rendimiento PostgreSQL
 │   ├── etapa_1_investigacion/             # EXPLAIN, consultas críticas, índices y particiones
 │   └── etapa_2_implementacion/            # Scripts EXPLAIN ANALYZE, índices U4 y métricas
+├── unidad_6/                              # Evaluación de rendimiento, escalabilidad y entrega final
+│   ├── benchmark/                         # Docker Compose, API, JMeter y scripts de carga
+│   │   ├── guia_ejecucion_pruebas.md      # Secuencia para ejecutar smoke, concurrencia y escala
+│   │   ├── run_tests.sh                   # Script principal de ejecución y consolidación
+│   │   ├── jmeter/ecommify.jmx            # Plan de carga con usuarios concurrentes
+│   │   ├── postgres/init.sql              # Dataset inicial S para PostgreSQL
+│   │   ├── postgres/scale.sql             # Recarga de datasets M y L para PostgreSQL
+│   │   └── mongo/scale.js                 # Recarga de datasets M y L para MongoDB
+│   ├── etapa_1_evaluacion/                # Plan, comparativo, CAP, trade-offs y resultados
+│   └── etapa_2_proyecto_final/            # Informe técnico integral, presentación y guion
 ├── .gitignore
 ├── docker-compose.yml                     # Definición de infraestructura local
 ├── docker-compose.u4.yml                  # PostgreSQL aislado para pruebas de Unidad 4
@@ -92,8 +102,36 @@ Ecommify_Database_Design/
 8. `mongodb/schema/collections.md` — diseño de colecciones.
 9. `mongodb/README.md` — prueba local de MongoDB con Docker.
 10. `unidad_4/README.md` — optimización avanzada PostgreSQL.
-11. `docs/03_decisiones_arquitectonicas.md` — cómo conviven los dos motores.
-12. `docs/04_matriz_decision.md` — justificación de qué entidad va a qué motor.
+11. `unidad_6/benchmark/guia_ejecucion_pruebas.md` — comandos para ejecutar pruebas smoke, concurrencia, escalabilidad y consolidación.
+12. `unidad_6/etapa_1_evaluacion/06_resultados_pruebas.md` — resultados de concurrencia, escalabilidad y cuellos de botella.
+13. `unidad_6/etapa_2_proyecto_final/01_base_informe_tecnico.md` — informe técnico integral de cierre.
+14. `docs/03_decisiones_arquitectonicas.md` — cómo conviven los dos motores.
+15. `docs/04_matriz_decision.md` — justificación de qué entidad va a qué motor.
+
+## Ejecución rápida de pruebas Unidad 6
+
+Las pruebas de rendimiento de Unidad 6 se ejecutan desde `unidad_6/benchmark` y usan Docker Compose para levantar PostgreSQL, MongoDB, la API híbrida y JMeter.
+
+```bash
+cd unidad_6/benchmark
+./run_tests.sh smoke 2 15 2 smoke_demo
+./run_tests.sh concurrency 60 2 10
+./run_tests.sh scalability 60 2
+./run_tests.sh consolidate
+```
+
+La prueba `smoke` valida el entorno con 2 usuarios durante 15 segundos. La prueba `concurrency` ejecuta los niveles 1, 10, 25, 50 y 100 usuarios. La prueba `scalability` mantiene 10 usuarios y compara datasets M y L; la escala S se toma del dataset inicial. Los resultados consolidados quedan en `unidad_6/benchmark/resultados/`.
+
+Para la prueba formal completa:
+
+```bash
+cd unidad_6/benchmark
+./run_tests.sh concurrency 120 5 10
+./run_tests.sh scalability 120 3
+./run_tests.sh consolidate
+```
+
+La guía detallada está en `unidad_6/benchmark/guia_ejecucion_pruebas.md`.
 
 ## Estado del entregable
 
@@ -107,6 +145,8 @@ El repositorio incluye los componentes solicitados para la Etapa 2:
 - Esquemas y ejemplos de documentos MongoDB en `mongodb/schema/`.
 - Inicializacion local de MongoDB con validadores, indices y datos mock en `mongodb/init/`.
 - Carpeta de Unidad 4 con investigación, implementación y plantilla de métricas en `unidad_4/`.
+- Carpeta de Unidad 6 con benchmark reproducible, resultados de concurrencia/escalabilidad y entregables finales en `unidad_6/`.
+- Guía de ejecución de pruebas de Unidad 6 en `unidad_6/benchmark/guia_ejecucion_pruebas.md`.
 - Notebook de análisis exploratorio del dataset Olist en `notebooks/`.
 
 Para la entrega formal en plataforma académica, exportar los archivos editables a:
