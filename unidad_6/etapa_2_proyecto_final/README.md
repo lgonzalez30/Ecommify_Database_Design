@@ -1,6 +1,6 @@
-# Unidad 6 — Etapa 2: Proyecto final
+# Unidad 6 - Etapa 2: Proyecto final
 
-Esta carpeta contiene **bases editables**, no entregables cerrados. El equipo debe ajustar redacción, diseño visual, capturas, costos, conclusiones personales y formato institucional antes de entregar.
+Esta carpeta contiene los insumos y archivos editables para el cierre del proyecto final de Unidad 6. El equipo debe revisar redaccion, capturas, conclusiones, formato institucional y exportaciones finales antes de entregar.
 
 ## Insumos
 
@@ -11,27 +11,59 @@ Esta carpeta contiene **bases editables**, no entregables cerrados. El equipo de
 | `03_guion_video.md` | Guion cronometrado para grabar el video de 12 a 15 minutos. |
 | `04_checklist_repositorio.md` | Tareas para convertir el repositorio actual en el entregable final. |
 
-## Archivos Office generados
+## Archivos editables
 
 | Archivo | Formato | Características |
 |---|---|---|
 | `Informe_Tecnico_Integral_Ecommify.docx` | Word editable | Informe gerencial con portada, tablas, diagramas, resultados, recomendaciones y anexos. |
 | `Presentacion_Ejecutiva_Ecommify_U6.pptx` | PowerPoint editable | 12 diapositivas, gráficos nativos, arquitectura, CAP y hoja de ruta. |
 
-Para regenerarlos después de modificar el generador:
+El generador de Office ya no forma parte del repositorio. Si se requieren ajustes, editar directamente los archivos `.docx`, `.pptx` o las bases Markdown de esta carpeta.
+
+## Evidencia de pruebas
+
+La evidencia tecnica se encuentra en:
+
+| Ruta | Contenido |
+|---|---|
+| `../benchmark/guia_ejecucion_pruebas.md` | Guia para ejecutar smoke, concurrencia, escalabilidad y consolidacion. |
+| `../benchmark/resultados/` | CSV consolidados, resumenes Markdown, graficas SVG y reportes JMeter disponibles localmente. |
+| `../etapa_1_evaluacion/06_resultados_pruebas.md` | Resultados explicados: throughput, p95, p99, errores y cuellos de botella. |
+
+## Secuencia recomendada para demostracion
+
+Desde `unidad_6/benchmark`:
 
 ```bash
-cd unidad_6/office_generator
-npm install
-node generate_office.js
+./run_tests.sh smoke 2 15 2 video_demo
 ```
 
-## Evidencia que debe conservarse
+Esta prueba valida PostgreSQL, MongoDB, la API hibrida y JMeter con 2 usuarios concurrentes durante 15 segundos y rampa de 2 segundos.
 
-- 25 corridas de concurrencia y 6 corridas adicionales de volumen.
+Para una prueba corta pero analizable:
+
+```bash
+./run_tests.sh concurrency 60 2 10
+./run_tests.sh scalability 60 2
+./run_tests.sh consolidate
+```
+
+Para repetir la prueba formal:
+
+```bash
+./run_tests.sh concurrency 120 5 10
+./run_tests.sh scalability 120 3
+./run_tests.sh consolidate
+```
+
+## Evidencia que debe conservarse para entrega
+
+- 25 corridas de concurrencia.
+- 6 corridas adicionales de volumen M/L, reutilizando la escala S de la matriz de concurrencia.
 - CSV consolidados y gráficas SVG de `unidad_6/benchmark/resultados/`.
 - Resultados `EXPLAIN (ANALYZE, BUFFERS)` de Unidad 4.
 - Diagramas existentes en `docs/diagrams/`.
+- Capturas del reporte HTML de JMeter o de la ejecucion en terminal para el video.
 
 ## Pendientes del equipo
 
