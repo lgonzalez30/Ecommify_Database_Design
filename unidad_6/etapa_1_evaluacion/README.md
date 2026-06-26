@@ -21,24 +21,9 @@ Este directorio contiene el primer entregable, de carácter **formativo**, de la
 | `06_resultados_pruebas.md` | Resultados cuantitativos, gráficas y cuellos de botella. |
 | `resultados/plantilla_metricas.csv` | Formato único para registrar cada corrida. |
 
-## Entregables Office
+## Uso de las bases
 
-La carpeta `entregables/` contiene los archivos editables para la entrega formativa:
-
-| Archivo | Requisito cubierto |
-|---|---|
-| `01_Pruebas_Rendimiento_y_Escalabilidad.docx` | Suite, ejecución, métricas, degradación, cuellos de botella y recomendaciones. |
-| `02_Analisis_Comparativo_PostgreSQL_vs_MongoDB.docx` | Comparación cuantitativa/cualitativa y viabilidad 100 % SQL/NoSQL. |
-| `03_Analisis_Arquitectonico_CAP.pptx` | CAP por módulo, particiones, replication lag y garantías. |
-| `04_Tradeoffs_y_Escenarios_Operacionales.docx` | Black Friday, checkout, auditoría y playbooks operacionales. |
-
-Para regenerarlos:
-
-```bash
-cd ../office_generator
-npm install
-node generate_stage1.js
-```
+Los archivos Markdown de esta carpeta son la base de contenido para elaborar manualmente los documentos de entrega. Los archivos Office finales deben prepararse fuera del repositorio a partir de estas bases y de la evidencia generada por el benchmark.
 
 ## Estado de la evidencia
 

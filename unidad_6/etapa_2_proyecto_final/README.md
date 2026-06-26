@@ -11,14 +11,9 @@ Esta carpeta contiene los insumos y archivos editables para el cierre del proyec
 | `03_guion_video.md` | Guion cronometrado para grabar el video de 12 a 15 minutos. |
 | `04_checklist_repositorio.md` | Tareas para convertir el repositorio actual en el entregable final. |
 
-## Archivos editables
+## Uso de las bases
 
-| Archivo | Formato | Características |
-|---|---|---|
-| `Informe_Tecnico_Integral_Ecommify.docx` | Word editable | Informe gerencial con portada, tablas, diagramas, resultados, recomendaciones y anexos. |
-| `Presentacion_Ejecutiva_Ecommify_U6.pptx` | PowerPoint editable | 12 diapositivas, gráficos nativos, arquitectura, CAP y hoja de ruta. |
-
-El generador de Office ya no forma parte del repositorio. Si se requieren ajustes, editar directamente los archivos `.docx`, `.pptx` o las bases Markdown de esta carpeta.
+Los archivos Markdown son la base de contenido para que el equipo prepare manualmente el informe, la presentacion y el video final. Los documentos Office finales no se regeneran desde el repositorio; deben elaborarse y ajustarse manualmente a partir de estas bases.
 
 ## Evidencia de pruebas
 
